@@ -136,6 +136,19 @@ export const blog = defineType({
     }),
     ...seoFields,
     ...ogFields,
+    defineField({
+      name: "tags",
+      title: "Tags",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "reference",
+          to: [{ type: "tag" }],
+        }),
+      ],
+      description: "Add tags to categorize this blog post (e.g. Trip Report, Recipe, DIY)",
+      group: GROUP.MAIN_CONTENT,
+    }),    
   ],
   preview: {
     select: {

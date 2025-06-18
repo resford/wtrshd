@@ -99,10 +99,7 @@ const createIndexListWithOrderableItems = ({
     );
 };
 
-export const structure = (
-  S: StructureBuilder,
-  context: StructureResolverContext,
-) => {
+export const structure = (S: StructureBuilder, context: StructureResolverContext) => {
   return S.list()
     .title("Content")
     .items([
@@ -122,6 +119,8 @@ export const structure = (
         icon: MessageCircleQuestion,
       }),
       createList({ S, type: "author", title: "Authors", icon: User }),
+      createList({ S, type: "tag", title: "Tags", icon: BookMarked }),
+
       S.divider(),
       S.listItem()
         .title("Site Configuration")

@@ -6,6 +6,8 @@ import { sanityFetch } from "@/lib/sanity/live";
 import { queryBlogIndexPageData } from "@/lib/sanity/query";
 import { getMetaData } from "@/lib/seo";
 import { handleErrors } from "@/utils";
+import { BlogFilter } from "@/components/blog-filter";
+
 
 async function fetchBlogPosts() {
   return await handleErrors(sanityFetch({ query: queryBlogIndexPageData }));
@@ -25,6 +27,7 @@ export default async function BlogIndexPage() {
 
   const {
     blogs = [],
+    tags = [],
     title,
     description,
     pageBuilder = [],
@@ -32,7 +35,7 @@ export default async function BlogIndexPage() {
     _type,
     displayFeaturedBlogs,
     featuredBlogsCount,
-  } = res.data;
+  } = res.data;  
 
   const validFeaturedBlogsCount = featuredBlogsCount
     ? Number.parseInt(featuredBlogsCount)
@@ -78,12 +81,8 @@ export default async function BlogIndexPage() {
         )}
 
         {remainingBlogs.length > 0 && (
-          <div className="grid grid-cols-1 gap-8 md:gap-12 lg:grid-cols-2 mt-8">
-            {remainingBlogs.map((blog) => (
-              <BlogCard key={blog._id} blog={blog} />
-            ))}
-          </div>
-        )}
+          <BlogFilter blogs={remainingBlogs} tags={tags} />
+        )}    
       </div>
 
       {pageBuilder && pageBuilder.length > 0 && (

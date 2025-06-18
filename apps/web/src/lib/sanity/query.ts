@@ -51,12 +51,17 @@ const blogCardFragment = /* groq */ `
   _id,
   title,
   description,
-  "slug":slug.current,
+  "slug": slug.current,
   richText,
   orderRank,
   ${imageFragment},
   publishedAt,
-  ${blogAuthorFragment}
+  ${blogAuthorFragment},
+  "tags": tags[]->{
+    _id,
+    title,
+    slug
+  }
 `;
 
 const buttonsFragment = /* groq */ `
@@ -213,12 +218,36 @@ export const queryBlogIndexPageData = defineQuery(`
     _type,
     title,
     description,
-    "displayFeaturedBlogs" : displayFeaturedBlogs == "yes",
-    "featuredBlogsCount" : featuredBlogsCount,
+    "displayFeaturedBlogs": displayFeaturedBlogs == "yes",
+    "featuredBlogsCount": featuredBlogsCount,
     ${pageBuilderFragment},
     "slug": slug.current,
     "blogs": *[_type == "blog" && (seoHideFromLists != true)] | order(orderRank asc){
       ${blogCardFragment}
+    },
+    "tags": *[_type == "tag"] | order(title asc){
+      _id,
+      title,
+      slug
+    }
+  }
+`);
+
+export const queryBlogTagPageData = defineQuery(/* groq */ `
+  *[_type == "tag" && slug.current == $slug][0]{
+    _id,
+    _type,
+    title,
+    description,
+    "slug": slug.current,
+    "blogs": *[_type == "blog" && references(^._id) && !seoHideFromLists] | order(orderRank asc){
+      _id,
+      title,
+      slug,
+      publishedAt,
+      image,
+      description,
+      tags[]->{_id, title, slug}
     }
   }
 `);
