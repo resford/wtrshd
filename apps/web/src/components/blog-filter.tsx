@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { cn } from "@/lib/utils";
 import { BlogCard } from "./blog-card";
 
 type Tag = {
   _id: string;
   title: string;
-  slug: {
-    current: string;
-  };
+  slug: { current: string };
 };
 
 type Blog = {
@@ -40,9 +39,7 @@ export function BlogFilter({
       <div className="flex flex-wrap gap-2 mb-8">
         <button
           onClick={() => setActiveTag(null)}
-          className={`px-3 py-1 rounded border ${
-            !activeTag ? "bg-black text-white" : "bg-gray-100"
-          }`}
+          className={cn("tag-button", !activeTag && "tag-button-active")}
         >
           All
         </button>
@@ -50,9 +47,10 @@ export function BlogFilter({
           <button
             key={tag._id}
             onClick={() => setActiveTag(tag.slug.current)}
-            className={`px-3 py-1 rounded border ${
-              activeTag === tag.slug.current ? "bg-black text-white" : "bg-gray-100"
-            }`}
+            className={cn(
+              "tag-button",
+              activeTag === tag.slug.current && "tag-button-active"
+            )}
           >
             {tag.title}
           </button>

@@ -241,13 +241,7 @@ export const queryBlogTagPageData = defineQuery(/* groq */ `
     description,
     "slug": slug.current,
     "blogs": *[_type == "blog" && references(^._id) && !seoHideFromLists] | order(orderRank asc){
-      _id,
-      title,
-      slug,
-      publishedAt,
-      image,
-      description,
-      tags[]->{_id, title, slug}
+      ${blogCardFragment}
     }
   }
 `);
